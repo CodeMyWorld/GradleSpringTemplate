@@ -11,6 +11,6 @@
     <title>REMOTE API</title>
   </head>
   <body>
-  NOTHING
+  RATE API INDEX
   </body>
 </html>
