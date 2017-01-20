@@ -16,14 +16,25 @@
         http://www.springframework.org/schema/task
         http://www.springframework.org/schema/task/spring-task-4.0.xsd
         ">
-        
+
+
+    <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean" id="currency_country">
+        <property name="location" value="classpath:rate_currency_country.properties"/>
+        <property name="fileEncoding" value="UTF-8"/>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean" id="code_country">
+        <property name="location" value="classpath:rate_code_country_name.properties"/>
+        <property name="fileEncoding" value="UTF-8"/>
+    </bean>
+
+    <mvc:annotation-driven/>
+    <context:annotation-config/>
     <!-- 启动自动扫描该包下所有的Bean-->
     <context:component-scan base-package="softlab.rate" />
     <!-- 基于注释的事务，当注释中发现@Transactional时，使用id为“transactionManager”的事务管理器  -->
     <!-- 如果没有设置transaction-manager的值，则spring以缺省默认的事务管理器来处理事务，默认事务管理器为第一个加载的事务管理器 -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
-    <mvc:annotation-driven/>
-    <context:annotation-config/>
     <task:annotation-driven executor="myExecutor" scheduler="myScheduler"/>
     <task:executor  id="myExecutor"  pool-size="5"/>
     <task:scheduler id="myScheduler" pool-size="10"/>

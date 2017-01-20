@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import softlab.rate.entity.Currency;
 import softlab.rate.model.CurrencyModel;
-import softlab.rate.service.ICurrencyService;
+import softlab.rate.service.CurrencyService;
 import softlab.rate.util.ResponseUtil;
 import javax.annotation.Resource;
 import java.util.List;
@@ -19,10 +19,11 @@ import java.util.List;
 @RequestMapping("/currency")
 public class CurrencyController {
     @Resource(name = "currencyService")
-    private ICurrencyService currencyService;
+    private CurrencyService currencyService;
 
     @Resource(name = "responseUtil")
     private ResponseUtil responseUtil;
+
 
     @RequestMapping(value="/currencies", method = RequestMethod.GET)
     public ResponseEntity<?> getCurrencies(@RequestParam(value="cid", required = false) String cid,

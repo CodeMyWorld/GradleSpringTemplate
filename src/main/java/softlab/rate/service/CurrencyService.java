@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by alex on 17-1-17.
  */
-public interface ICurrencyService extends IOperations<Currency>{
+public interface CurrencyService extends IOperations<Currency>{
     List<CurrencyModel> getCurrencyList(String lan);
     Currency addCurrencyByCode(String code);
 }

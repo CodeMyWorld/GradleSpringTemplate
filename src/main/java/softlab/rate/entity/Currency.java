@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * Created by alex on 17-1-17.
@@ -25,6 +26,9 @@ public class Currency implements Serializable{
     @Column(name = "code", length = 5)
     private String code;
 
+    @OneToMany (mappedBy = "currency", cascade = CascadeType.ALL)
+    private Set<Rate> rates;
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -43,5 +47,13 @@ public class Currency implements Serializable{
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Set<Rate> getRates() {
+        return rates;
+    }
+
+    public void setRates(Set<Rate> rates) {
+        this.rates = rates;
     }
 }
