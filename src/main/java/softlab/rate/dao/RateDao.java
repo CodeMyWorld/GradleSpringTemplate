@@ -1,6 +1,7 @@
 package softlab.rate.dao;
 
 import softlab.rate.dao.common.IOperations;
+import softlab.rate.entity.Currency;
 import softlab.rate.entity.Rate;
 
 import java.util.List;
@@ -10,4 +11,5 @@ import java.util.List;
  */
 public interface RateDao extends IOperations<Rate> {
     List<Rate> getLatestUpdateDate();
+    List<Rate> getHistoricalRates(Currency currency, long start, long end);
 }

@@ -50,8 +50,9 @@ public class CurrencyServiceImp extends AbstractService<Currency> implements Cur
 
     @Override
     public Currency addCurrencyByCode(String code) {
+        code = code.toUpperCase();
         List<Currency> currency = queryList("code", code);
-        if(currency.size() == 0){
+        if(currency.size() == 0 && codeCountry.keySet().contains(code)){
             Currency newCurrency = new Currency();
             newCurrency.setCode(code);
             create(newCurrency);

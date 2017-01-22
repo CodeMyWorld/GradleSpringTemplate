@@ -18,6 +18,8 @@ import softlab.rate.dao.RateDao;
 import softlab.rate.dao.common.IOperations;
 import softlab.rate.entity.*;
 import softlab.rate.entity.Currency;
+import softlab.rate.model.CurrencyModel;
+import softlab.rate.model.HistoricalRate;
 import softlab.rate.model.RateModel;
 import softlab.rate.service.CurrencyService;
 import softlab.rate.service.RateService;
@@ -110,18 +112,10 @@ public class RateServiceImpl extends AbstractService<Rate> implements RateServic
             System.out.println(s);
         }
 
-        //判断是否正常返回数据
+
         if(result.get(0).equals("PACIFIC Exchange Rate Service")){
             List<Currency> currencies = currencyService.queryList("code", currencyCode);
-            Currency currency;
-            if(currencies.size() > 1){
-                currency = currencies.get(0);
-            }else {
-                currency = new Currency();
-                currency.setCode(currencyCode);
-                currencyService.create(currency);
-            }
-
+            Currency currency = currencies.get(0);
 
             long preDate = cl.getTimeInMillis();
             double preRate = 0;
@@ -201,6 +195,40 @@ public class RateServiceImpl extends AbstractService<Rate> implements RateServic
             }
         }
         return result;
+    }
+
+    @Override
+    public HistoricalRate getHistoricalRates(String fromCid, String toCid, long start, long end) {
+        Currency fromCurrency = currencyService.findOne(fromCid);
+        Currency toCurrency = currencyService.findOne(toCid);
+        List<Rate> fromRate = rateDao.getHistoricalRates(fromCurrency, start, end);
+        List<Rate> toRate = rateDao.getHistoricalRates(toCurrency, start, end);
+        List<Double> values = new ArrayList<>();
+        if(fromRate.size() != 0 && toRate.size() != 0 && fromRate.size() == toRate.size()){
+            for(int i = 0; i < fromRate.size(); i++){
+                double value = round(toRate.get(i).getValue()/fromRate.get(i).getValue(), 3);
+                values.add(value);
+            }
+        }else if (fromRate.size() == 0) {
+            for(Rate rate : toRate){
+                values.add(round(rate.getValue(), 3));
+            }
+        }else if (toRate.size() == 0){
+            for(Rate rate : toRate){
+                values.add(round(rate.getValue(), 3));
+            }
+        }
+        if(values.size() == 0){
+            return null;
+        }else {
+            HistoricalRate historicalRate = new HistoricalRate();
+            historicalRate.setFromCid(fromCid);
+            historicalRate.setToCid(toCid);
+            historicalRate.setStart(start);
+            historicalRate.setValues(values);
+            historicalRate.setTitle("Historical Rate");
+            return historicalRate;
+        }
     }
 
 
@@ -310,10 +338,10 @@ public class RateServiceImpl extends AbstractService<Rate> implements RateServic
             }
             sb.delete(sb.length()-1,sb.length());
             JSONObject jsonObject = new JSONObject(sb.toString());
-            JSONObject meta = jsonObject.getJSONObject("list").getJSONObject("meta");
-            if(meta.getInt("count") > 150){
-                return null;
-            }
+//            JSONObject meta = jsonObject.getJSONObject("list").getJSONObject("meta");
+//            if(meta.getInt("count") > 150){
+//                return null;
+//            }
             JSONArray jsonArray = jsonObject.getJSONObject("list").getJSONArray("resources");
             for(int i=0; i<jsonArray.length(); i++){
                 JSONObject fields = ((JSONObject)jsonArray.get(i)).getJSONObject("resource").getJSONObject("fields");

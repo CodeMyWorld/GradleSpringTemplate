@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import softlab.rate.model.HistoricalRate;
 import softlab.rate.model.RateModel;
 import softlab.rate.service.RateService;
 import softlab.rate.util.ResponseUtil;
@@ -28,5 +29,18 @@ public class RateController {
     public ResponseEntity<?> getCurrentRate(@RequestParam(value = "from") String from){
         List<RateModel> data = rateService.getCurrentRate(from);
         return responseUtil.getSuccessResponseEntity(data);
+    }
+
+    @RequestMapping (value = "/history", method = RequestMethod.GET)
+    public ResponseEntity<?> getHistoricalRate(@RequestParam(value = "from") String from,
+                                               @RequestParam(value = "to") String to,
+                                               @RequestParam(value = "start") long start,
+                                               @RequestParam(value = "end") long end){
+        HistoricalRate data = rateService.getHistoricalRates(from, to, start, end);
+        if(data != null){
+            return responseUtil.getSuccessResponseEntity(data);
+        }else {
+            return responseUtil.getErrorResponseEntity("rate data error", "444");
+        }
     }
 }
