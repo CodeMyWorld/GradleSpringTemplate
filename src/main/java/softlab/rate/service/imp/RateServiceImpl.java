@@ -214,7 +214,7 @@ public class RateServiceImpl extends AbstractService<Rate> implements RateServic
                 values.add(round(rate.getValue(), 3));
             }
         }else if (toRate.size() == 0){
-            for(Rate rate : toRate){
+            for(Rate rate : fromRate){
                 values.add(round(rate.getValue(), 3));
             }
         }

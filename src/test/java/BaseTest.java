@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+import softlab.rate.aspect.AspectTest;
 import softlab.rate.dao.RateDao;
 import softlab.rate.entity.Currency;
 import softlab.rate.entity.Rate;
@@ -45,6 +46,7 @@ public class BaseTest {
 
     @Resource (name = "currencyService")
     private CurrencyService currencyService;
+
 
 
 

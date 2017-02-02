@@ -4,7 +4,7 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/context
@@ -14,8 +14,7 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
         http://www.springframework.org/schema/task
-        http://www.springframework.org/schema/task/spring-task-4.0.xsd
-        ">
+        http://www.springframework.org/schema/task/spring-task-4.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
     <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean" id="currency_country">
@@ -27,7 +26,7 @@
         <property name="location" value="classpath:rate_code_country_name.properties"/>
         <property name="fileEncoding" value="UTF-8"/>
     </bean>
-
+    <aop:aspectj-autoproxy/>
     <mvc:annotation-driven/>
     <context:annotation-config/>
     <!-- 启动自动扫描该包下所有的Bean-->
